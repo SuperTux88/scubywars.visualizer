@@ -99,6 +99,22 @@
 		<url>https://github.com/fbe/Scubywars-Visualizer</url>
 	</scm>
 
+	<distributionManagement>
+		<repository>
+			<id>c4c-releases</id>
+			<name>coding4coffee.org Release Repository</name>
+			<url>http://nexus.coding4coffee.org/content/repositories/releases
+			</url>
+		</repository>
+		<snapshotRepository>
+			<id>c4c-snapshots</id>
+			<name>coding4coffee.org Snapshots Repository</name>
+			<url>http://nexus.coding4coffee.org/content/repositories/snapshots
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
