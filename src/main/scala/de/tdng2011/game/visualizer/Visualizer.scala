@@ -1,4 +1,4 @@
-package de.tdng2011.game.sampleclient.visual
+package de.tdng2011.game.visualizer
 
 import actors.Actor
 import de.tdng2011.game.library.{Shot, Player, Vec2}

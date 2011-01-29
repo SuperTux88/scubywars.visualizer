@@ -1,8 +1,7 @@
-package de.tdng2011.game.sampleclient
+package de.tdng2011.game.visualizer
 
 import java.net.Socket
 import de.tdng2011.game.library.{Player, Shot}
-import visual.Visualizer
 import java.io.DataInputStream
 import de.tdng2011.game.library.util.{ByteUtil, StreamUtil}
 
