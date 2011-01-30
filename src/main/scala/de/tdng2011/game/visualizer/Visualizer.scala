@@ -3,20 +3,13 @@ package de.tdng2011.game.visualizer
 import actors.Actor
 import de.tdng2011.game.library.{Shot, Player, Vec2}
 
-/**
- * Created by IntelliJ IDEA.
- * User: benjamin
- * Date: 23.01.11
- * Time: 00:56
- * To change this template use File | Settings | File Templates.
- */
+import java.util.Random
+import swing._
+import java.awt.{ Color, Graphics2D, Font }
+import math._
 
 object Visualizer extends Actor {
 
-  import java.util.Random
-  import swing._
-  import java.awt.{ Color, Graphics2D, Font }
-  import math._
   val lineLength = 30 // todo monster / player radius * 2
 
   var currentEntityDescriptions = List[Any]()
