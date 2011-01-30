@@ -13,15 +13,15 @@ object Client {
   handshakeVisualizer
 
   def main(args : Array[String]){
-    val stream = new DataInputStream(connection.getInputStream)
+    val iStream = new DataInputStream(connection.getInputStream)
 
     while(true){
-      val buf = StreamUtil.read(stream, 2)
+      val buf = StreamUtil.read(iStream, 2)
       val id = buf.getShort
 
       id match {
-        case x if x == EntityTypes.Player.id => entityList = entityList :+ new Player(stream)
-        case x if x == EntityTypes.Shot.id   => entityList = entityList :+ new Shot(stream)
+        case x if x == EntityTypes.Player.id => entityList = entityList :+ new Player(iStream)
+        case x if x == EntityTypes.Shot.id   => entityList = entityList :+ new Shot(iStream)
         case x if x == EntityTypes.World.id  => {
           Visualizer !! entityList
           entityList = List[Any]()
@@ -34,7 +34,7 @@ object Client {
     }
   }
 
-  def handshakeVisualizer =  connection.getOutputStream.write(ByteUtil.toByteArray(1.shortValue));
+  def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(1.shortValue))
 
   def connect() : Socket = {
     try {
