@@ -1,9 +1,9 @@
 package de.tdng2011.game.visualizer
 
 import java.net.Socket
-import de.tdng2011.game.library.{Player, Shot}
 import java.io.DataInputStream
 import de.tdng2011.game.library.util.{ByteUtil, StreamUtil}
+import de.tdng2011.game.library.{EntityTypes, Player, Shot}
 
 object Client {
   val playerType  = 0
@@ -33,14 +33,7 @@ object Client {
     while(true) Visualizer !! getFrame(stream)
   }
 
-
-  def handshakeVisualizer =  connection.getOutputStream.write(ByteUtil.toByteArray(1.shortValue));
-  def handshakePlayer     =  {
-    connection.getOutputStream.write(ByteUtil.toByteArray(0.shortValue))
-    val response = StreamUtil.read(new DataInputStream(connection.getInputStream), 9);
-    println("response code: " + response.get)
-    println("publicId: " + response.getLong)
-  };
+  def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(1.shortValue))
 
   def connect() : Socket = {
     try {
