@@ -16,9 +16,9 @@ object Client {
   handshakeVisualizer 
 
   def getFrame(stream : DataInputStream) : List[Any] = StreamUtil.read(stream,2).getShort match {
-    case x if x == playerType => new Player(stream) :: getFrame(stream)
-    case x if x == shotType   => new Shot(stream) :: getFrame(stream)
-    case x if x == worldType  => Nil
+    case `playerType` => new Player(stream) :: getFrame(stream)
+    case `shotType`   => new Shot(stream) :: getFrame(stream)
+    case `worldType`  => Nil
     case x => {
           println("barbra streisand! (unknown bytes, wth?!) typeId: " + x)
           System.exit(-1)
