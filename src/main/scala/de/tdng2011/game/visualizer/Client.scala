@@ -6,19 +6,22 @@ import de.tdng2011.game.library.util.{ByteUtil, StreamUtil}
 import de.tdng2011.game.library.{EntityTypes, Player, Shot}
 
 object Client {
-  val playerType  = 0
-  val shotType    = 1
-  val worldType   = 3
-
+  val playerType = EntityTypes.Player.id.shortValue
+  val shotType = EntityTypes.Shot.id.shortValue
+  val worldType = EntityTypes.World.id.shortValue
 
   Visualizer.start
   val connection : Socket = connect()
   handshakeVisualizer 
 
-  def getFrame(stream : DataInputStream) : List[Any] = StreamUtil.read(stream,2).getShort match {
-    case `playerType` => new Player(stream) :: getFrame(stream)
-    case `shotType`   => new Shot(stream) :: getFrame(stream)
-    case `worldType`  => Nil
+  def getFrame(iStream : DataInputStream) : List[Any] = StreamUtil.read(iStream, 2).getShort match {
+    case `playerType` => new Player(iStream) :: getFrame(iStream)
+    case `shotType`   => new Shot(iStream) :: getFrame(iStream)
+    case `worldType`  => {
+      val size = StreamUtil.read(iStream, 4).getInt
+      StreamUtil.read(iStream, size)
+      Nil
+    }
     case x => {
           println("barbra streisand! (unknown bytes, wth?!) typeId: " + x)
           System.exit(-1)
@@ -28,12 +31,11 @@ object Client {
 
 
   def main(args : Array[String]){
-    val stream = new DataInputStream(connection.getInputStream)
-    connection.getOutputStream.write(ByteUtil.toByteArray(true, false, true, false))
-    while(true) Visualizer !! getFrame(stream)
+    val iStream = new DataInputStream(connection.getInputStream)
+    while(true) Visualizer !! getFrame(iStream)
   }
 
-  def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(1.shortValue))
+  def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.shortValue))
 
   def connect() : Socket = {
     try {
