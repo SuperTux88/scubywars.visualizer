@@ -11,8 +11,7 @@ object Client {
   val worldType = EntityTypes.World.id.shortValue
 
   Visualizer.start
-  val connection : Socket = connect()
-  handshakeVisualizer 
+  var connection : Socket = connect()
 
   def getFrame(iStream : DataInputStream) : List[Any] = StreamUtil.read(iStream, 2).getShort match {
     case `playerType` => new Player(iStream) :: getFrame(iStream)
@@ -31,15 +30,28 @@ object Client {
 
 
   def main(args : Array[String]){
-    val iStream = new DataInputStream(connection.getInputStream)
-    while(true) Visualizer !! getFrame(iStream)
+    var iStream = new DataInputStream(connection.getInputStream)
+    while(true){
+      try {
+        Visualizer !! getFrame(iStream)
+      } catch {
+        case e => {
+          e.printStackTrace()
+          println("error while getting frame and sending to visualizer. trying to reconnect!");
+          connection = connect();
+          iStream = new DataInputStream(connection.getInputStream);
+        }
+      }
+    }
   }
 
-  def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.shortValue))
+ // def handshakeVisualizer = connection.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.shortValue))
 
   def connect() : Socket = {
     try {
-      new Socket("localhost",1337)
+      val s = new Socket("localhost",1337)
+      s.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.shortValue))
+      s
     } catch {
       case e => {
         println("connecting failed. retrying in 5 seconds");
