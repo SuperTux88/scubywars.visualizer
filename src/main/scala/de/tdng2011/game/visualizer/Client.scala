@@ -10,8 +10,4 @@ class Client(hostname : String) extends AbstractClient(hostname, RelationTypes.V
     Visualizer !! frame
   }
 }
-object Client {
-  def main(args : Array[String]){
-    new Client("remote.coding4coffee.org")
-  }
-}
+
