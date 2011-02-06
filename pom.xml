@@ -58,7 +58,7 @@
 				<groupId>org.dstovall</groupId>
 				<artifactId>onejar-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>de.tdng2011.game.visualizer.Client</mainClass>
+					<mainClass>de.tdng2011.game.visualizer.Main</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
