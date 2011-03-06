@@ -11,7 +11,7 @@ class Client(hostname : String) extends AbstractClient(hostname, RelationTypes.V
     Visualizer !! world
   }
 
-  def processScoreBoard(scoreBoard : ScoreBoard) {
+  override def processScoreBoard(scoreBoard : ScoreBoard) {
     Visualizer !! scoreBoard
   }
 }
