@@ -11,8 +11,12 @@ class Client(hostname : String) extends AbstractClient(hostname, RelationTypes.V
     Visualizer !! world
   }
 
-  override def processScoreBoard(scoreBoard : ScoreBoard) {
-    Visualizer !! scoreBoard
+  override def processScoreBoard(scoreBoard : Map[Long, Int]) {
+    Visualizer !! ScoreBoardChangedMessage(scoreBoard)
+  }
+
+  override def processNames(names : Map[Long, String]) {
+    Visualizer !! NamesChangedMessage(names)
   }
 }
 
