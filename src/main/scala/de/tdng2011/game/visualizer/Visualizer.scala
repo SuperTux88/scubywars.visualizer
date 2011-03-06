@@ -6,13 +6,15 @@ import java.util.Random
 import swing._
 import java.awt.{ Color, Graphics2D, Font }
 import math._
-import de.tdng2011.game.library.{World, Shot, Player}
+import de.tdng2011.game.library.{ScoreBoard, World, Shot, Player}
 
 object Visualizer extends Actor {
 
   val lineLength = 30 // todo monster / player radius * 2
 
   var currentWorld = World(IndexedSeq(), IndexedSeq())
+
+  var currentScores = Map[Long, Int]()
 
   val stars = for(x <- 1 to 50) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
 
@@ -46,6 +48,26 @@ object Visualizer extends Actor {
       background = Color.BLACK
 
       preferredSize = new Dimension(mainPanel.size.width - gameFieldPanel.size.width, mainPanel.size.height)
+      override def paintComponent(g: Graphics2D) {
+        super.paintComponent(g)
+
+        var i: Int = 1
+
+        val oldFont = g.getFont
+
+        for((playerId,score) <- currentScores.toList.sort{ (a, b) => a._2 > b._2 }) {
+          g.setFont(new Font("Arial", Font.PLAIN, 20))
+
+          g.setColor(Color.GREEN)
+          g.drawString(playerId +  " " + score, 20, i * 25)
+          g.setFont(font)
+
+          i += 1
+        }
+        g.setColor(Color.GREEN)
+        g.drawLine(0,0,0,size.height)
+
+      }
     }
 
     mainPanel.peer.add(gameFieldPanel.peer)
@@ -102,6 +124,10 @@ object Visualizer extends Actor {
         case x : World => {
           currentWorld = x
           frame.repaint()
+        }
+
+        case x : ScoreBoard => {
+          currentScores = x.scores
         }
 
         case barbrastreisand => {
