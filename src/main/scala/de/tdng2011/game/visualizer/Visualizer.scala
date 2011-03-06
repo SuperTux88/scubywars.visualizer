@@ -1,18 +1,18 @@
 package de.tdng2011.game.visualizer
 
 import actors.Actor
-import de.tdng2011.game.library.{Shot, Player, Vec2}
-
+import de.tdng2011.game.library.util.Vec2
 import java.util.Random
 import swing._
 import java.awt.{ Color, Graphics2D, Font }
 import math._
+import de.tdng2011.game.library.{World, Shot, Player}
 
 object Visualizer extends Actor {
 
   val lineLength = 30 // todo monster / player radius * 2
 
-  var currentEntityDescriptions = List[Any]()
+  var currentWorld = World(IndexedSeq(), IndexedSeq())
 
   val stars = for(x <- 1 to 50) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
 
@@ -35,21 +35,9 @@ object Visualizer extends Actor {
           g.setColor(Color.WHITE)
           g.drawString("*",x,y)
         }
-        for (description <- currentEntityDescriptions) {
-          description match {
-            case x : Player => {
-              drawPlayer(g, x)
-            }
 
-            case x : Shot => {
-              drawShot(g, x)
-            }
-
-            case barbrastreisand => {
-              println("whuhuhuhu")
-            }
-          }
-        }
+        currentWorld.players.foreach(x => drawPlayer(g, x))
+        currentWorld.shots.foreach(x => drawShot(g, x))
       }
     }
 
@@ -111,8 +99,8 @@ object Visualizer extends Actor {
   def act = {
     loop {
       react {
-        case x : List[Any] => {
-          currentEntityDescriptions = x
+        case x : World => {
+          currentWorld = x
           frame.repaint()
         }
 
