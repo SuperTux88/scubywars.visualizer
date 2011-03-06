@@ -12,7 +12,7 @@ object Visualizer extends Actor {
 
   val lineLength = 30 // todo monster / player radius * 2
 
-  var currentWorld = World(IndexedSeq(), IndexedSeq())
+  var currentWorld : World = null
 
   var currentScores = Map[Long, Int]()
 
@@ -38,8 +38,10 @@ object Visualizer extends Actor {
           g.drawString("*",x,y)
         }
 
-        currentWorld.players.foreach(x => drawPlayer(g, x))
-        currentWorld.shots.foreach(x => drawShot(g, x))
+        if (currentWorld != null) {
+          currentWorld.players.foreach(x => drawPlayer(g, x))
+          currentWorld.shots.foreach(x => drawShot(g, x))
+        }
       }
     }
 
