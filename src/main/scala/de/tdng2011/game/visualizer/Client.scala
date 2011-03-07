@@ -12,11 +12,11 @@ class Client(hostname : String) extends AbstractClient(hostname, RelationTypes.V
   }
 
   override def processScoreBoard(scoreBoard : Map[Long, Int]) {
-    Visualizer !! ScoreBoardChangedMessage(scoreBoard)
+    Visualizer.currentScores = scoreBoard.toList.sort{ (a, b) => a._2 > b._2 }
   }
 
   override def processNames(names : Map[Long, String]) {
-    Visualizer !! NamesChangedMessage(names)
+    Visualizer.currentNames = names
   }
 }
 

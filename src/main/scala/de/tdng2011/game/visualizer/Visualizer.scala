@@ -13,7 +13,7 @@ object Visualizer extends Actor {
   val lineLength = 30 // todo monster / player radius * 2
 
   var currentWorld : World = null
-  var currentScores = Map[Long, Int]()
+  var currentScores = List[(Long, Int)]()
   var currentNames = Map[Long, String]()
 
   val stars = for(x <- 1 to 50) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
@@ -57,7 +57,7 @@ object Visualizer extends Actor {
 
         val oldFont = g.getFont
 
-        for((playerId,score) <- currentScores.toList.sort{ (a, b) => a._2 > b._2 }) {
+        for((playerId,score) <- currentScores) {
           g.setFont(new Font("Arial", Font.PLAIN, 20))
 
           g.setColor(Color.GREEN)
@@ -126,14 +126,6 @@ object Visualizer extends Actor {
         case x : World => {
           currentWorld = x
           frame.repaint()
-        }
-
-        case x : ScoreBoardChangedMessage => {
-          currentScores = x.scoreBoard
-        }
-
-        case x : NamesChangedMessage => {
-          currentNames = x.names
         }
 
         case barbrastreisand => {
