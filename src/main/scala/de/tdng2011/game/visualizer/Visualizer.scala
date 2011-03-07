@@ -1,14 +1,14 @@
 package de.tdng2011.game.visualizer
 
 import actors.Actor
-import de.tdng2011.game.library.util.Vec2
 import java.util.Random
 import swing._
 import java.awt.{ Color, Graphics2D, Font }
 import math._
 import de.tdng2011.game.library.{ScoreBoard, World, Shot, Player}
+import de.tdng2011.game.library.util.{ScubywarsLogger, Vec2}
 
-object Visualizer extends Actor {
+object Visualizer extends Actor with ScubywarsLogger {
 
   val lineLength = 30 // todo monster / player radius * 2
 
@@ -16,7 +16,8 @@ object Visualizer extends Actor {
   var currentScores = List[(Long, Int)]()
   var currentNames = Map[Long, String]()
 
-  val stars = for(x <- 1 to 50) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
+  val bgStars = for(x <- 1 to 500) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
+  val fgStars = for(x <- 1 to 100) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
 
   var frame = new MainFrame {
     title = "Scubywars"
@@ -33,10 +34,11 @@ object Visualizer extends Actor {
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-        for ((x,y) <- stars){
-          g.setColor(Color.WHITE)
-          g.drawString("*",x,y)
-        }
+        g.setColor(new Color(104,104,104))
+        for ((x,y) <- bgStars) g.fillRect(x,y,1,1)
+        g.setColor(new Color(200,200,200))
+        for ((x,y) <- fgStars) g.fillRect(x,y,2,2)
+
 
         if (currentWorld != null) {
           currentWorld.players.foreach(x => drawPlayer(g, x))
@@ -128,8 +130,8 @@ object Visualizer extends Actor {
           frame.repaint()
         }
 
-        case barbrastreisand => {
-          println("whuhuhuhu")
+        case x => {
+          logger.warn("unknown message from received " +x )
         }
       }
     }
