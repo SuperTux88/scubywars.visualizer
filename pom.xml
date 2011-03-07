@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.tdng2010.game</groupId>
 		<artifactId>scubywars.parent</artifactId>
-		<version>0.5</version>
+		<version>0.6-SNAPSHOT</version>
 	</parent>
 
 	<groupId>de.tdng2010.game</groupId>
@@ -30,6 +30,10 @@
 			<artifactId>scubywars.library</artifactId>
 			<version>0.6-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest</artifactId>
+        </dependency>
 	</dependencies>
 
 	<repositories>
