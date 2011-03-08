@@ -12,7 +12,7 @@ object Visualizer extends Actor with ScubywarsLogger {
 
   val lineLength = 30 // todo monster / player radius * 2
 
-  var currentWorld : World = null
+  var currentWorld : World = _
   var currentScores = List[(Long, Int)]()
   var currentNames = Map[Long, String]()
 
