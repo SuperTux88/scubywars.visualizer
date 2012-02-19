@@ -23,18 +23,26 @@ object SoundPlayer extends Actor with ScubywarsLogger {
     loop {
       react {
         case x : CrashMessage => {
-          if (playing) {
-            breakable {
-              for ((id, score) <- scoreBoard) {
-                if (score > x.scoreBoard.get(id).getOrElse(0)) {
-                  new Thread(new SoundPlayer("/explosion-01.wav")).start
-                  logger.debug("crash: " + id)
-                  break
-                }
-              }
-            }
-          }
-          scoreBoard = x.scoreBoard
+//          if (playing) {
+//            breakable {
+//              for ((id, score) <- scoreBoard) {
+//                if (score > x.scoreBoard.get(id).getOrElse(0)) {
+//                  new Thread(new SoundPlayer("/explosion-01.wav")).start
+//                  logger.debug("crash: " + id)
+//                  break
+//                }
+//              }
+//            }
+//          }
+//          scoreBoard = x.scoreBoard
+        }
+        
+        case 'shotSpawned => {
+          new Thread(new SoundPlayer("/shotSpawned.wav")).start
+        }
+        
+        case 'playerKilled => {
+        	new Thread(new SoundPlayer("/playerKilled.wav")).start
         }
 
         case x => {

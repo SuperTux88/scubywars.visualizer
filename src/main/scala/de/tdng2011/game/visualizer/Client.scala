@@ -20,5 +20,13 @@ class Client(hostname : String) extends AbstractClient(hostname, RelationTypes.V
   override def processNames(names : Map[Long, String]) {
     Visualizer.currentNames = names
   }
+  
+  override def shotSpawnedEvent() {
+    SoundPlayer !! 'shotSpawned
+  }
+  
+  override def playerKilledEvent(){
+    SoundPlayer !! 'playerKilled
+  }
 }
 
