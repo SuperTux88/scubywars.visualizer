@@ -13,61 +13,19 @@ import scala.util.control.Breaks._
  * Time: 16:01
  */
 
-object SoundPlayer extends Actor with ScubywarsLogger {
-
-  var scoreBoard = Map[Long, Int]()
-
-  var playing = false
-
-  def act = {
-    loop {
-      react {
-        case x : CrashMessage => {
-//          if (playing) {
-//            breakable {
-//              for ((id, score) <- scoreBoard) {
-//                if (score > x.scoreBoard.get(id).getOrElse(0)) {
-//                  new Thread(new SoundPlayer("/explosion-01.wav")).start
-//                  logger.debug("crash: " + id)
-//                  break
-//                }
-//              }
-//            }
-//          }
-//          scoreBoard = x.scoreBoard
-        }
-        
-        case 'shotSpawned => {
-          new Thread(new SoundPlayer("/shotSpawned.wav")).start
-        }
-        
-        case 'playerKilled => {
-        	new Thread(new SoundPlayer("/playerKilled.wav")).start
-        }
-
-        case x => {
-          logger.warn("unknown message received " + x)
-        }
-      }
-    }
-  }
-}
-
-class SoundPlayer(fileName : String) extends Runnable{
+class SoundPlayer(fileName : String) extends Runnable {
+ val file = getClass getResourceAsStream fileName
+ val stream = AudioSystem getAudioInputStream file
+ val clip = AudioSystem.getClip()
+ clip.open(stream)
+ //clip.start()
 
   def run = playSound
 
   def playSound() {
-    val file = getClass getResourceAsStream fileName
-    val stream = AudioSystem getAudioInputStream file
-
-    using(SourceDataLine(stream)) {
-      line => {
-        line.addLineListener((e: LineEvent) => {println(e)})
-        stream >> line
-      }
-    }
+        clip.stop();
+        clip.setFramePosition(0);
+        clip.start(); 
   }
 }
 
-case class CrashMessage(scoreBoard : Map[Long, Int])
