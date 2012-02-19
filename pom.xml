@@ -30,6 +30,11 @@
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>com.googlecode.scala-midi</groupId>
+			<artifactId>scala-midi</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.scalatest</groupId>
 			<artifactId>scalatest</artifactId>
 			<scope>test</scope>

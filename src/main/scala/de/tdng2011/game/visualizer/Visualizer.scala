@@ -70,7 +70,6 @@ object Visualizer extends Actor with ScubywarsLogger {
         }
         g.setColor(Color.GREEN)
         g.drawLine(0,0,0,size.height)
-
       }
     }
 
@@ -131,7 +130,7 @@ object Visualizer extends Actor with ScubywarsLogger {
         }
 
         case x => {
-          logger.warn("unknown message from received " +x )
+          logger.warn("unknown message received " + x)
         }
       }
     }
