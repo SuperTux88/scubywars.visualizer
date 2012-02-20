@@ -4,24 +4,26 @@ import de.tdng2011.game.library.connection.{ RelationTypes, AbstractClient }
 import de.tdng2011.game.library.event.{ CollisionEvent, PlayerKilledEvent, ShotSpawnedEvent }
 import de.tdng2011.game.library.World
 
-class Client(hostname: String, val sound: Boolean = false) extends AbstractClient(hostname, RelationTypes.VisualizerNG) {
+class Client(hostname: String, val sound: Boolean = false) extends {
+  val visualizer = new Visualizer()
+} with AbstractClient(hostname, RelationTypes.VisualizerNG) {
 
-  Visualizer.start
+  visualizer.start
 
   if (sound) {
     new SoundPlayer("/background.wav", true)
   }
 
   def processWorld(world: World) {
-    Visualizer !! world
+    visualizer !! world
   }
 
   override def processScoreBoard(scoreBoard: Map[Long, Int]) {
-    Visualizer.currentScores = scoreBoard.toList.sort { (a, b) => a._2 > b._2 }
+    visualizer.currentScores = scoreBoard.toList.sort { (a, b) => a._2 > b._2 }
   }
 
   override def processNames(names: Map[Long, String]) {
-    Visualizer.currentNames = names
+    visualizer.currentNames = names
   }
 
   override def shotSpawnedEvent(event: ShotSpawnedEvent) {

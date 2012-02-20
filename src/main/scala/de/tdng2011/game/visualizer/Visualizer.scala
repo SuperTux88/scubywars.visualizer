@@ -8,7 +8,7 @@ import math._
 import de.tdng2011.game.library.{ ScoreBoard, World, Shot, Player }
 import de.tdng2011.game.library.util.{ ScubywarsLogger, Vec2 }
 
-object Visualizer extends Actor with ScubywarsLogger {
+class Visualizer extends MainFrame with Actor with ScubywarsLogger {
 
   val worldSize = 1000 //m
 
@@ -21,68 +21,66 @@ object Visualizer extends Actor with ScubywarsLogger {
   val bgStars = for (x <- 1 to 500) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
   val fgStars = for (x <- 1 to 100) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
 
-  var frame = new MainFrame {
-    title = "Scubywars"
-    var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
-      focusable = true
-      background = Color.BLACK
-      preferredSize = new Dimension(worldSize + 400, worldSize)
-    }
-
-    var gameFieldPanel = new Panel {
-      focusable = true
-      background = Color.BLACK
-      preferredSize = new Dimension(mainPanel.size.width + 600, worldSize)
-
-      override def paintComponent(g: Graphics2D) {
-        super.paintComponent(g)
-        g.setColor(new Color(104, 104, 104))
-        for ((x, y) <- bgStars) g.fillRect(x, y, 1, 1)
-        g.setColor(new Color(200, 200, 200))
-        for ((x, y) <- fgStars) g.fillRect(x, y, 2, 2)
-
-        if (currentWorld != null) {
-          currentWorld.players.foreach(x => drawPlayer(g, x))
-          currentWorld.shots.foreach(x => drawShot(g, x))
-        }
-      }
-    }
-
-    var statsPanel = new Panel() {
-      focusable = true
-      background = Color.BLACK
-
-      preferredSize = new Dimension(mainPanel.size.width - gameFieldPanel.size.width, mainPanel.size.height)
-      override def paintComponent(g: Graphics2D) {
-        super.paintComponent(g)
-
-        var i: Int = 1
-
-        val oldFont = g.getFont
-
-        for ((playerId, score) <- currentScores) {
-          g.setFont(new Font("Arial", Font.PLAIN, 20))
-
-          g.setColor(Color.GREEN)
-          g.drawString(currentNames.get(playerId).getOrElse(playerId + "") + " " + score, 20, i * 25)
-          g.setFont(font)
-
-          i += 1
-        }
-        g.setColor(Color.GREEN)
-        g.drawLine(0, 0, 0, size.height)
-      }
-    }
-
-    mainPanel.peer.add(gameFieldPanel.peer)
-    mainPanel.peer.add(statsPanel.peer)
-
-    contents = mainPanel
-
-    centerOnScreen
-    resizable_=(true)
-    visible_=(true)
+  title = "Scubywars"
+  var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
+    focusable = true
+    background = Color.BLACK
+    preferredSize = new Dimension(worldSize + 400, worldSize)
   }
+
+  var gameFieldPanel = new Panel {
+    focusable = true
+    background = Color.BLACK
+    preferredSize = new Dimension(mainPanel.size.width + 600, worldSize)
+
+    override def paintComponent(g: Graphics2D) {
+      super.paintComponent(g)
+      g.setColor(new Color(104, 104, 104))
+      for ((x, y) <- bgStars) g.fillRect(x, y, 1, 1)
+      g.setColor(new Color(200, 200, 200))
+      for ((x, y) <- fgStars) g.fillRect(x, y, 2, 2)
+
+      if (currentWorld != null) {
+        currentWorld.players.foreach(x => drawPlayer(g, x))
+        currentWorld.shots.foreach(x => drawShot(g, x))
+      }
+    }
+  }
+
+  var statsPanel = new Panel() {
+    focusable = true
+    background = Color.BLACK
+
+    preferredSize = new Dimension(mainPanel.size.width - gameFieldPanel.size.width, mainPanel.size.height)
+    override def paintComponent(g: Graphics2D) {
+      super.paintComponent(g)
+
+      var i: Int = 1
+
+      val oldFont = g.getFont
+
+      for ((playerId, score) <- currentScores) {
+        g.setFont(new Font("Arial", Font.PLAIN, 20))
+
+        g.setColor(Color.GREEN)
+        g.drawString(currentNames.get(playerId).getOrElse(playerId + "") + " " + score, 20, i * 25)
+        g.setFont(font)
+
+        i += 1
+      }
+      g.setColor(Color.GREEN)
+      g.drawLine(0, 0, 0, size.height)
+    }
+  }
+
+  mainPanel.peer.add(gameFieldPanel.peer)
+  mainPanel.peer.add(statsPanel.peer)
+
+  contents = mainPanel
+
+  centerOnScreen
+  resizable = true
+  visible = true
 
   def drawPlayer(g: Graphics2D, player: Player) {
 
@@ -126,7 +124,7 @@ object Visualizer extends Actor with ScubywarsLogger {
       react {
         case x: World => {
           currentWorld = x
-          frame.repaint()
+          repaint()
         }
 
         case x => {
