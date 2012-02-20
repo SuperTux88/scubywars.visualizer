@@ -2,6 +2,7 @@ package de.tdng2011.game.visualizer
 
 import actors.Actor
 import javax.sound.sampled.{ LineEvent, AudioSystem }
+import javax.sound.sampled.Clip
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +18,11 @@ class SoundPlayer(fileName: String, repeat: Boolean = false) {
   val clip = AudioSystem.getClip()
   clip.open(stream)
 
-  if (repeat) clip.loop(0)
+  if (repeat) {
+    clip.setLoopPoints(0, -1)
+    clip.loop(Clip.LOOP_CONTINUOUSLY)
+    clip.start()
+  }
 
   def playSound() {
     clip.stop();
