@@ -77,9 +77,9 @@ object Visualizer extends Actor with ScubywarsLogger {
     mainPanel.peer.add(statsPanel.peer)
 
     contents = mainPanel
-
+    
     centerOnScreen
-    resizable_=(false)
+    resizable_=(true)
     visible_=(true)
   }
 

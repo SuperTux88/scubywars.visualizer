@@ -8,7 +8,7 @@ class Client(hostname: String, val sound: Boolean = false) extends AbstractClien
   Visualizer.start
 
   if (sound){
-   new SoundPlayer("/background.wav", true).playSound()
+   new SoundPlayer("/background.wav", true)
   }
   
   def processWorld(world: World) {
