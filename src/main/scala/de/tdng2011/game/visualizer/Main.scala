@@ -3,7 +3,7 @@ package de.tdng2011.game.visualizer
 import swing.event.ButtonClicked
 import swing._
 
-object Main extends SwingApplication{
+object Main extends SwingApplication {
   def startup(args: Array[String]) {
     if (args.size > 0) {
       new Client(args(0))
@@ -15,16 +15,20 @@ object Main extends SwingApplication{
           columns = 20
           selectAll
         }
+        val sound = new CheckBox {
+          text = "sound"
+          selected = true
+        }
         val connectionButton = new Button("Connect!") {
           reactions += {
-            case x:ButtonClicked => {
-              new Client(inputField.text)
+            case x: ButtonClicked => {
+              new Client(inputField.text, sound.selected)
               close
             }
           }
         }
         defaultButton = connectionButton
-        contents = new FlowPanel(inputField, connectionButton)
+        contents = new FlowPanel(inputField, sound, connectionButton)
         peer.setLocationRelativeTo(null)
         visible = true
       }

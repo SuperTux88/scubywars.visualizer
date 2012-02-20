@@ -3,11 +3,11 @@ package de.tdng2011.game.visualizer
 import de.tdng2011.game.library.connection.{ RelationTypes, AbstractClient }
 import de.tdng2011.game.library.World
 
-class Client(hostname: String) extends AbstractClient(hostname, RelationTypes.VisualizerNG) {
+class Client(hostname: String, val sound: Boolean = false) extends AbstractClient(hostname, RelationTypes.VisualizerNG) {
 
   Visualizer.start
 
-  new SoundPlayer("/background.wav", true).playSound
+  if (sound) new SoundPlayer("/background.wav", true).playSound
 
   def processWorld(world: World) {
     Visualizer !! world
@@ -22,15 +22,19 @@ class Client(hostname: String) extends AbstractClient(hostname, RelationTypes.Vi
   }
 
   override def shotSpawnedEvent() {
-    val x = scala.util.Random.shuffle(Sounds.shotSounds)
-    var first = x(0)
-    first.playSound
+    if (sound) {
+      val x = scala.util.Random.shuffle(Sounds.shotSounds)
+      var first = x(0)
+      first.playSound
+    }
   }
 
   override def playerKilledEvent() {
-    val x = scala.util.Random.shuffle(Sounds.killSounds)
-    var first = x(0)
-    first.playSound
+    if (sound) {
+      val x = scala.util.Random.shuffle(Sounds.killSounds)
+      var first = x(0)
+      first.playSound
+    }
   }
 }
 
