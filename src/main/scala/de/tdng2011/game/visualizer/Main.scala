@@ -19,16 +19,20 @@ object Main extends SwingApplication {
           text = "sound"
           selected = true
         }
+        val halfSize = new CheckBox {
+          text = "halfsize"
+          selected = false
+        }
         val connectionButton = new Button("Connect!") {
           reactions += {
             case x: ButtonClicked => {
-              new Client(inputField.text, sound.selected)
+              new Client(inputField.text, sound.selected, halfSize.selected)
               close
             }
           }
         }
         defaultButton = connectionButton
-        contents = new FlowPanel(inputField, sound, connectionButton)
+        contents = new FlowPanel(inputField, sound, halfSize, connectionButton)
         peer.setLocationRelativeTo(null)
         visible = true
       }

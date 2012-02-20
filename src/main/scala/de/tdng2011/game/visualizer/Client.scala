@@ -4,8 +4,8 @@ import de.tdng2011.game.library.connection.{ RelationTypes, AbstractClient }
 import de.tdng2011.game.library.event.{ CollisionEvent, PlayerKilledEvent, ShotSpawnedEvent }
 import de.tdng2011.game.library.World
 
-class Client(hostname: String, val sound: Boolean = false) extends {
-  val visualizer = new Visualizer()
+class Client(hostname: String, val sound: Boolean = false, val halfSize: Boolean = false) extends {
+  val visualizer = new Visualizer(halfSize)
 } with AbstractClient(hostname, RelationTypes.VisualizerNG) {
 
   visualizer.start

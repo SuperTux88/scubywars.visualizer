@@ -8,18 +8,20 @@ import math._
 import de.tdng2011.game.library.{ ScoreBoard, World, Shot, Player }
 import de.tdng2011.game.library.util.{ ScubywarsLogger, Vec2 }
 
-class Visualizer extends MainFrame with Actor with ScubywarsLogger {
+class Visualizer(halfSize: Boolean = false) extends MainFrame with Actor with ScubywarsLogger {
 
-  val worldSize = 1000 //m
+  val factor = if (halfSize) 2 else 1
 
-  val lineLength = 30 // todo monster / player radius * 2
+  val worldSize = 1000 / factor //m
+
+  val lineLength = 30 / factor // todo monster / player radius * 2
 
   var currentWorld: World = _
   var currentScores = List[(Long, Int)]()
   var currentNames = Map[Long, String]()
 
-  val bgStars = for (x <- 1 to 500) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
-  val fgStars = for (x <- 1 to 100) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
+  val bgStars = for (x <- 1 to 500 / factor) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
+  val fgStars = for (x <- 1 to 100 / factor) yield (new Random().nextInt(worldSize), new Random().nextInt(worldSize))
 
   title = "Scubywars"
   var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
@@ -31,7 +33,7 @@ class Visualizer extends MainFrame with Actor with ScubywarsLogger {
   var gameFieldPanel = new Panel {
     focusable = true
     background = Color.BLACK
-    preferredSize = new Dimension(mainPanel.size.width + 600, worldSize)
+    preferredSize = new Dimension(mainPanel.size.width - 400 + worldSize, worldSize)
 
     override def paintComponent(g: Graphics2D) {
       super.paintComponent(g)
@@ -79,13 +81,14 @@ class Visualizer extends MainFrame with Actor with ScubywarsLogger {
   contents = mainPanel
 
   centerOnScreen
-  resizable = true
+  resizable = false
   visible = true
 
   def drawPlayer(g: Graphics2D, player: Player) {
 
     val ahead = Vec2(1, 0).rotate(player.direction)
-    val posPeak = player.pos + ahead * (lineLength / 2)
+    val pos = Vec2(player.pos.x / factor, player.pos.y / factor)
+    val posPeak = pos + ahead * (lineLength / 2)
 
     val aheadLeft = Vec2(1, 0).rotate((player.direction + sin(60) + Pi).floatValue)
     val aheadRight = Vec2(1, 0).rotate((player.direction - sin(60) + Pi).floatValue)
@@ -116,7 +119,8 @@ class Visualizer extends MainFrame with Actor with ScubywarsLogger {
 
   def drawShot(g: Graphics2D, shot: Shot) {
     g.setColor(Color.RED)
-    g.fillOval(shot.pos.x.toInt - (shot.radius / 2), shot.pos.y.toInt - (shot.radius / 2), shot.radius * 2, shot.radius * 2)
+    val shotSize = shot.radius / factor
+    g.fillOval(shot.pos.x.toInt / factor - (shotSize / 2), shot.pos.y.toInt / factor - (shotSize / 2), shotSize * 2, shotSize * 2)
   }
 
   def act = {
