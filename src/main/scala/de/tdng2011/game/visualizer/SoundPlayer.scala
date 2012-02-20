@@ -1,10 +1,7 @@
 package de.tdng2011.game.visualizer
 
 import actors.Actor
-import com.googlecode.scala.sound.sampled._
-import javax.sound.sampled.{LineEvent, AudioSystem}
-import de.tdng2011.game.library.util.ScubywarsLogger
-import scala.util.control.Breaks._
+import javax.sound.sampled.{ LineEvent, AudioSystem }
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,19 +10,19 @@ import scala.util.control.Breaks._
  * Time: 16:01
  */
 
-class SoundPlayer(fileName : String) extends Runnable {
- val file = getClass getResourceAsStream fileName
- val stream = AudioSystem getAudioInputStream file
- val clip = AudioSystem.getClip()
- clip.open(stream)
- //clip.start()
+class SoundPlayer(fileName: String, repeat: Boolean = false) {
+  val now = System.currentTimeMillis()
+  val file = getClass getResource fileName
+  val stream = AudioSystem getAudioInputStream file
+  val clip = AudioSystem.getClip()
+  clip.open(stream)
 
-  def run = playSound
+  if (repeat) clip.loop(0)
 
   def playSound() {
-        clip.stop();
-        clip.setFramePosition(0);
-        clip.start(); 
+    clip.stop();
+    clip.setFramePosition(0);
+    clip.start();
   }
 }
 
