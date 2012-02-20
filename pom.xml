@@ -69,9 +69,43 @@
 				<artifactId>maven-scala-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>excluded</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>excluded</classifier>
+							<excludes>
+								<exclude>**/*.wav</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.dstovall</groupId>
 				<artifactId>onejar-maven-plugin</artifactId>
 				<configuration>
+					<mainJarFilename>${project.build.finalName}-excluded.jar</mainJarFilename>
+					<resources>
+						<fileSet>
+							<directory>${basedir}/src/main/resources</directory>
+							<includes>
+								<include>*.wav</include>
+							</includes>
+						</fileSet>
+					</resources>
 					<mainClass>de.tdng2011.game.visualizer.Main</mainClass>
 				</configuration>
 			</plugin>
