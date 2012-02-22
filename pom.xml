@@ -68,23 +68,26 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>excluded</id>
+						<id>full</id>
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-							<classifier>excluded</classifier>
-							<excludes>
-								<exclude>**/*.wav</exclude>
-							</excludes>
+							<classifier>full</classifier>
 						</configuration>
 					</execution>
 					<execution>
+						<id>default-jar</id>
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/*.wav</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -92,7 +95,6 @@
 				<groupId>org.dstovall</groupId>
 				<artifactId>onejar-maven-plugin</artifactId>
 				<configuration>
-					<mainJarFilename>${project.build.finalName}-excluded.jar</mainJarFilename>
 					<resources>
 						<fileSet>
 							<directory>${basedir}/src/main/resources</directory>
